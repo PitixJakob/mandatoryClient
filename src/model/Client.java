@@ -111,6 +111,10 @@ public class Client{
      */
     public void logout() throws IOException {
         sendMessage("QUIT");
+        closeConn();
+    }
+
+    public void closeConn() throws IOException {
         if (fromServer != null){
             fromServer.close();
         }

@@ -22,6 +22,7 @@ public class Reader implements Runnable{
             while ((message = fromServer.readLine()) != null){
                 if (message.startsWith("J_ERR")){
                     client.showError("Username is already taken");
+                    client.closeConn();
                 }
                 if (message.startsWith("DATA ")){
                     client.receiveMessage(message.substring(5));
