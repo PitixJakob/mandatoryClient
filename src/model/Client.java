@@ -47,41 +47,68 @@ public class Client{
         this.hostname = hostname;
         this.port = port;
 
+        Reader ir = new Reader(this);
+        Thread readerThread = new Thread(ir);
+        readerThread.start();
+
         timer = new Timer(60000, e -> sendMessage("ALVE"));
 
         sendMessage("JOIN "+username+", "+hostname+":"+port);
     }
 
-
+    /**
+     * Tells the controller to show an error to the user
+     * @param errorMessage
+     */
     public void showError(String errorMessage) {
         controller.showError(errorMessage);
     }
 
+    /**
+     * Sends a message to the server
+     * @param message Message to be sent
+     */
     public void sendMessage(String message){
         toServer.println(message);
     }
 
-    public void receiveMessage(String message){
-        controller.receiveMessage(message);
-    }
-
+    /**
+     * Formats a message to be sent to all users connected to the server and sends it
+     * @param message Message to be sent
+     */
     public void sendChatLine(String message){
         String result = "DATA "+username+": "+message;
         sendMessage(result);
     }
 
-    public void joinOK(){
-        Reader ir = new Reader(this);
-        Thread readerThread = new Thread(ir);
-        readerThread.start();
-        timer.start();
-        controller.receiveMessage("Connected to server "+hostname+":"+port);
+    /**
+     * Tells the controller to show a message in the gui
+     * @param message Message to be shown
+     */
+    public void receiveMessage(String message){
+        controller.receiveMessage(message);
     }
 
+    /**
+     * Starts the timer and tells the gui that the user is connected to the server
+     */
+    public void joinOK(){
+        timer.start();
+        receiveMessage("Connected to server "+hostname+":"+port);
+    }
+
+    /**
+     * Tells the controller to update the userlist
+     * @param users new user list
+     */
     public void updateListedUsers(String[] users){
         controller.updateListedUsers(users);
     }
 
+    /**
+     * Disconnects from the server
+     * @throws IOException
+     */
     public void logout() throws IOException {
         sendMessage("QUIT");
         if (fromServer != null){
@@ -94,6 +121,7 @@ public class Client{
             socket.close();
         }
     }
+
 
     public BufferedReader getFromServer() {
         return fromServer;
