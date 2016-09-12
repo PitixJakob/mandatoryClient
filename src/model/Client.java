@@ -122,7 +122,6 @@ public class Client{
         }
     }
 
-
     public BufferedReader getFromServer() {
         return fromServer;
     }
