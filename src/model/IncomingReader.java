@@ -1,4 +1,4 @@
-package experiments;
+package model;
 
 import java.io.BufferedReader;
 
@@ -28,7 +28,7 @@ public class IncomingReader implements Runnable{
                     client.sendError("Username is already taken");
                 }
                 if (message.startsWith("DATA ")){
-                    client.getMessage(message.substring(5));
+                    client.receiveMesaage(message.substring(5));
                 }
                 if (message.startsWith("LIST ")){
                     String[] result = message.substring(5).split(" ");

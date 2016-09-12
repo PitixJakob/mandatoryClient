@@ -1,7 +1,8 @@
-package experiments;
+package model;
 
-import experiments.gui.DummyClientGui;
+import control.Controller;
 
+import javax.naming.ldap.Control;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,11 +24,11 @@ public class Client{
     private Socket socket;
     private PrintWriter toServer;
     private BufferedReader fromServer;
+    private Controller controller;
 
-    private DummyClientGui dcg;
 
-    public Client(DummyClientGui dcg){
-        this.dcg = dcg;
+    public Client(){
+
     }
 
 
@@ -41,12 +42,7 @@ public class Client{
         this.hostname = hostname;
         this.port = port;
 
-        timer = new Timer(60000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sendMessage("ALVE");
-            }
-        });
+        timer = new Timer(60000, e -> sendMessage("ALVE"));
 
         IncomingReader ir = new IncomingReader(this);
         Thread readerThread = new Thread(ir);
@@ -76,12 +72,16 @@ public class Client{
         return toServer;
     }
 
+    public void setController(Controller controller){
+        this.controller = controller;
+    }
+
     public BufferedReader getFromServer() {
         return fromServer;
     }
 
     public void sendError(String errorMessage) throws IOException {
-        dcg.showError(errorMessage);
+        controller.showError(errorMessage);
         toServer.close();
         fromServer.close();
         socket.close();
@@ -91,13 +91,13 @@ public class Client{
         toServer.println(message);
     }
 
-    public void getMessage(String message){
-        dcg.getMessage(message);
+    public void receiveMesaage(String message){
+        controller.receiveMessage(message);
     }
 
     public void joinOK(){
         timer.start();
-        dcg.getMessage("Connected to server "+hostname+":"+port);
+        controller.receiveMessage("Connected to server "+hostname+":"+port);
     }
 
     public void sendChatLine(String message){
@@ -106,6 +106,6 @@ public class Client{
     }
 
     public void updateListedUsers(String[] users){
-        dcg.updateListedUsers(users);
+        controller.updateListedUsers(users);
     }
 }
