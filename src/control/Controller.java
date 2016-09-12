@@ -12,11 +12,9 @@ public class Controller {
     private Client client;
     private GuiClient guiClient;
 
-    public Controller(Client client, GuiClient guiClient) {
-        this.client = client;
-        this.guiClient = guiClient;
-        client.setController(this);
-        guiClient.setController(this);
+    public Controller() {
+        client = new Client(this);
+        guiClient = new GuiClient(this);
     }
 
     public void receiveMessage(String message) {
@@ -37,5 +35,9 @@ public class Controller {
 
     public void connect(String hostname, int port, String username) throws IOException {
         client.connect(hostname, port, username);
+    }
+
+    public void logout() throws IOException {
+        client.logout();
     }
 }

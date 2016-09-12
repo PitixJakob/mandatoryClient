@@ -2,10 +2,7 @@ package model;
 
 import control.Controller;
 
-import javax.naming.ldap.Control;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,13 +24,21 @@ public class Client{
     private Controller controller;
 
 
-    public Client(){
-
+    /**
+     * Initial client construction
+     * @param controller
+     */
+    public Client(Controller controller){
+        this.controller = controller;
     }
 
-
-
-
+    /**
+     * Sends a connection request to the server
+     * @param hostname
+     * @param port
+     * @param username
+     * @throws IOException
+     */
     public void connect(String hostname, int port, String username) throws IOException {
         socket = new Socket(hostname, port);
         toServer = new PrintWriter(socket.getOutputStream(), true);
@@ -44,60 +49,20 @@ public class Client{
 
         timer = new Timer(60000, e -> sendMessage("ALVE"));
 
-        IncomingReader ir = new IncomingReader(this);
-        Thread readerThread = new Thread(ir);
-        readerThread.start();
-
         sendMessage("JOIN "+username+", "+hostname+":"+port);
     }
 
-    public String getHostname() {
-        return hostname;
-    }
 
-
-    public int getPort() {
-        return port;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public Socket getSocket() {
-        return socket;
-    }
-
-    public PrintWriter getToServer() {
-        return toServer;
-    }
-
-    public void setController(Controller controller){
-        this.controller = controller;
-    }
-
-    public BufferedReader getFromServer() {
-        return fromServer;
-    }
-
-    public void sendError(String errorMessage) throws IOException {
+    public void showError(String errorMessage) {
         controller.showError(errorMessage);
-        toServer.close();
-        fromServer.close();
-        socket.close();
     }
 
     public void sendMessage(String message){
         toServer.println(message);
     }
 
-    public void receiveMesaage(String message){
+    public void receiveMessage(String message){
         controller.receiveMessage(message);
-    }
-
-    public void joinOK(){
-        timer.start();
-        controller.receiveMessage("Connected to server "+hostname+":"+port);
     }
 
     public void sendChatLine(String message){
@@ -105,7 +70,32 @@ public class Client{
         sendMessage(result);
     }
 
+    public void joinOK(){
+        Reader ir = new Reader(this);
+        Thread readerThread = new Thread(ir);
+        readerThread.start();
+        timer.start();
+        controller.receiveMessage("Connected to server "+hostname+":"+port);
+    }
+
     public void updateListedUsers(String[] users){
         controller.updateListedUsers(users);
+    }
+
+    public void logout() throws IOException {
+        sendMessage("QUIT");
+        if (fromServer != null){
+            fromServer.close();
+        }
+        if (toServer != null){
+            toServer.close();
+        }
+        if (!socket.isClosed()){
+            socket.close();
+        }
+    }
+
+    public BufferedReader getFromServer() {
+        return fromServer;
     }
 }

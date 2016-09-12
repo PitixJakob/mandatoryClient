@@ -5,15 +5,11 @@ import java.io.BufferedReader;
 /**
  * Created by jakob on 07-09-16.
  */
-public class IncomingReader implements Runnable{
+public class Reader implements Runnable{
     private Client client;
     private BufferedReader fromServer;
 
-    public IncomingReader(BufferedReader fromServer) {
-        this.fromServer = fromServer;
-    }
-
-    public IncomingReader(Client client) {
+    public Reader(Client client) {
         this.client = client;
         this.fromServer = client.getFromServer();
     }
@@ -25,10 +21,10 @@ public class IncomingReader implements Runnable{
         try{
             while ((message = fromServer.readLine()) != null){
                 if (message.startsWith("J_ERR")){
-                    client.sendError("Username is already taken");
+                    client.showError("Username is already taken");
                 }
                 if (message.startsWith("DATA ")){
-                    client.receiveMesaage(message.substring(5));
+                    client.receiveMessage(message.substring(5));
                 }
                 if (message.startsWith("LIST ")){
                     String[] result = message.substring(5).split(" ");
@@ -40,7 +36,7 @@ public class IncomingReader implements Runnable{
 
             }
         }catch (Exception ex){
-
+            client.showError("Encountered an error while reading from socket");
         }
     }
 }
