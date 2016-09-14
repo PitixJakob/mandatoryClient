@@ -28,7 +28,7 @@ public class Controller {
     }
 
     public void showError(String errorMessage) {
-        JOptionPane.showMessageDialog(null, errorMessage);
+        guiClient.showError(errorMessage);
     }
 
     public void sendChatLine(String message){

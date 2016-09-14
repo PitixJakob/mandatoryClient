@@ -5,17 +5,120 @@
  */
 package gui;
 
+import control.Controller;
+
+import javax.swing.*;
+import javax.swing.text.DefaultCaret;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+
 /**
- *
  * @author Gudni
  */
 public class GuiClient extends javax.swing.JFrame {
+    private Controller controller;
 
     /**
      * Creates new form GuiClient
      */
-    public GuiClient() {
+    public GuiClient(Controller controller) {
+        this.controller = controller;
+
+        setTheme();
         initComponents();
+        DefaultCaret dc = (DefaultCaret) chatArea.getCaret();
+        dc.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
+
+        usernameField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                if (!Character.isLetterOrDigit(e.getKeyChar()) || e.getKeyChar() == " ".toCharArray()[0] || usernameField.getText().length() > 12) {
+                    e.consume();
+                }
+            }
+        });
+        writeMessageArea.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                if (writeMessageArea.getText().length() > 250) {
+                    e.consume();
+                }
+            }
+        });
+
+        pack();
+        setVisible(true);
+        
+    }
+
+    public void setTheme(){
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GuiClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GuiClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GuiClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GuiClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void showError(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    public void showMessage(String message) {
+        chatArea.append(message + "\n");
+    }
+
+    public void updateListOfUsers(String[] users) {
+        for (String user : users) {
+            listOfUsersArea.append(user + "\n");
+        }
+    }
+
+    public boolean isNumber(String number) {
+        boolean result = false;
+
+        try {
+            Integer.parseInt(number);
+            result = true;
+        } catch (NumberFormatException ex) {
+
+        }
+        return result;
+    }
+
+    public boolean checkUsername(String username) {
+        boolean result = true;
+        if (username.length() > 12) {
+            result = false;
+        }
+        if (username.contains(" ")) {
+            result = false;
+        }
+        for (char character : username.toCharArray()) {
+            if (!Character.isLetterOrDigit(character)) {
+                result = false;
+            }
+        }
+        return result;
+    }
+
+    public boolean checkMessage(String message) {
+        boolean result = true;
+        if (message.length() > 250) {
+            result = false;
+        }
+        return result;
     }
 
     /**
@@ -56,15 +159,20 @@ public class GuiClient extends javax.swing.JFrame {
         chatArea.setLineWrap(true);
         chatArea.setRows(5);
         chatArea.setWrapStyleWord(true);
+        chatArea.setFocusable(false);
         jScrollPane1.setViewportView(chatArea);
+
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         listOfUsersArea.setEditable(false);
         listOfUsersArea.setColumns(20);
         listOfUsersArea.setRows(5);
+        listOfUsersArea.setFocusable(false);
         jScrollPane2.setViewportView(listOfUsersArea);
 
         writeMessageArea.setColumns(20);
         writeMessageArea.setRows(5);
+        writeMessageArea.setFocusable(false);
         writeMessageArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 writeMessageAreaKeyReleased(evt);
@@ -113,30 +221,29 @@ public class GuiClient extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel6)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
                     .addComponent(jLabel5)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                     .addComponent(jScrollPane3)
                     .addComponent(sendMessageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
                     .addComponent(jLabel4)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(joinChatButton, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
-                            .addGap(18, 18, 18)
-                            .addComponent(logOutButton))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(portnumberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(hostnameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(usernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(hostnameField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                                .addComponent(usernameField, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(portnumberField)))))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(joinChatButton, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(logOutButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(portnumberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(hostnameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(usernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(usernameField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(hostnameField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(portnumberField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,7 +261,7 @@ public class GuiClient extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane3))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(usernameLabel)
@@ -179,55 +286,36 @@ public class GuiClient extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
-        // TODO add your handling code here:
+        try {
+            controller.logout();
+        } catch (IOException e) {
+            showError(e.getMessage());
+        }
     }//GEN-LAST:event_logOutButtonActionPerformed
 
     private void joinChatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinChatButtonActionPerformed
-        // TODO add your handling code here:
+        if (isNumber(portnumberField.getText()) && checkUsername(usernameField.getText())) {
+            try {
+                controller.connect(hostnameField.getText(), Integer.parseInt(portnumberField.getText()), usernameField.getText());
+            } catch (IOException e) {
+                showError(e.getMessage());
+            }
+        } else {
+            showError("Username can only be 12 characters long and contain characters, digits and \"-\" as well as \"_\"");
+        }
     }//GEN-LAST:event_joinChatButtonActionPerformed
 
     private void sendMessageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMessageButtonActionPerformed
-        // TODO add your handling code here:
+        if (checkMessage(writeMessageArea.getText())) {
+            controller.sendChatLine(writeMessageArea.getText());
+        }
     }//GEN-LAST:event_sendMessageButtonActionPerformed
 
     private void writeMessageAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_writeMessageAreaKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_writeMessageAreaKeyReleased
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GuiClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GuiClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GuiClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GuiClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
+            sendMessageButtonActionPerformed(null);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GuiClient().setVisible(true);
-            }
-        });
-    }
+    }//GEN-LAST:event_writeMessageAreaKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea chatArea;
