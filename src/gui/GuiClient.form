@@ -24,7 +24,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="66bf5" class="javax.swing.JTextArea" binding="textArea2" default-binding="true">
+      <component id="66bf5" class="javax.swing.JTextArea" binding="showUsersArea">
         <constraints>
           <grid row="0" column="11" row-span="7" col-span="7" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
