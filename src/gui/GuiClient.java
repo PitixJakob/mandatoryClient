@@ -65,13 +65,11 @@ public class GuiClient {
     }
 
     public void showMessage(String message){
-        message = control.receiveMessage();
         showMessage.append(message + "\n");
     }
 
     public void updateListOfUsers(String[] users){
         showUsersArea.setText("");
-        users = control.updateListedUsers();
         for(String username : users){
             showUsersArea.append(username + "\n");
         }

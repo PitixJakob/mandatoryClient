@@ -3,6 +3,7 @@ package control;
 import gui.GuiClient;
 import model.Client;
 
+import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -18,15 +19,16 @@ public class Controller {
     }
 
     public void receiveMessage(String message) {
+        guiClient.showMessage(message);
 
     }
 
     public void updateListedUsers(String[] users) {
-
+        guiClient.updateListOfUsers(users);
     }
 
     public void showError(String errorMessage) {
-
+        JOptionPane.showMessageDialog(null, errorMessage);
     }
 
     public void sendChatLine(String message){
