@@ -9,9 +9,7 @@ import model.Client;
  */
 public class Main {
     public static void main(String[] args) {
-        GuiClient guiClient = new GuiClient();
-        Client client = new Client();
-        Controller controller = new Controller(client, guiClient);
+        Controller controller = new Controller();
 
     }
 }
