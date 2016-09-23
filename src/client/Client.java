@@ -113,6 +113,10 @@ public class Client{
         closeConn();
     }
 
+    /**
+     * Closes connection to the server
+     * @throws IOException for no apparent reason, How would I ever get an error from disconnecting, and wouldn't that error just result in a disconnection anyways?
+     */
     public void closeConn() throws IOException {
         if (fromServer != null){
             fromServer.close();
