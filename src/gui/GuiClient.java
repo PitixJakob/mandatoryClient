@@ -80,13 +80,17 @@ public class GuiClient extends javax.swing.JFrame {
         chatArea.setWrapStyleWord(true);
         jScrollPane1.setViewportView(chatArea);
 
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
         listOfUsersArea.setEditable(false);
         listOfUsersArea.setColumns(20);
         listOfUsersArea.setRows(5);
         jScrollPane2.setViewportView(listOfUsersArea);
 
         writeMessageArea.setColumns(20);
+        writeMessageArea.setLineWrap(true);
         writeMessageArea.setRows(5);
+        writeMessageArea.setWrapStyleWord(true);
         writeMessageArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 writeMessageAreaKeyReleased(evt);
@@ -228,17 +232,19 @@ public class GuiClient extends javax.swing.JFrame {
     private void sendMessageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMessageButtonActionPerformed
         
         String message = writeMessageArea.getText();
-        if(message.length() <= 250){
-            JOptionPane.showMessageDialog(rootPane, "You're message contains more than 250 character, please reduce the number of character");
-        }else{
+        if(message.length() <= 250 && client.getLoggedIn()){
             client.sendChatLine(message);
+            writeMessageArea.setText("");
+        }else {
+            JOptionPane.showMessageDialog(rootPane, "You're message contains more than 250 character, we will reduce the number of character.\nCheck if you are logged in.");
         }
-        writeMessageArea.setText("");
         
     }//GEN-LAST:event_sendMessageButtonActionPerformed
 
     private void writeMessageAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_writeMessageAreaKeyReleased
-        
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            sendMessageButton.doClick();
+        }
     }//GEN-LAST:event_writeMessageAreaKeyReleased
 
     /**
