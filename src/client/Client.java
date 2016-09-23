@@ -56,7 +56,7 @@ public class Client{
     }
 
     /**
-     * Tells the controller to show an error to the user
+     * Tells the Gui to show an error to the user
      * @param errorMessage
      */
     public void showError(String errorMessage) {
@@ -81,7 +81,7 @@ public class Client{
     }
 
     /**
-     * Tells the controller to show a message in the gui
+     * Tells the Gui to show a message in the textArea
      * @param message Message to be shown
      */
     public void receiveMessage(String message){
@@ -97,7 +97,7 @@ public class Client{
     }
 
     /**
-     * Tells the controller to update the userlist
+     * Tells the gui to update the userlist
      * @param users new user list
      */
     public void updateListedUsers(String[] users){
