@@ -19,15 +19,15 @@ public class Client{
     private Socket socket;
     private PrintWriter toServer;
     private BufferedReader fromServer;
-    private Controller controller;
+    private GuiClient gui;
 
 
     /**
      * Initial client construction
-     * @param controller
+     * @param gui
      */
-    public Client(Controller controller){
-        this.controller = controller;
+    public Client(GuiClient gui){
+        this.gui = gui;
     }
 
     /**
@@ -59,7 +59,7 @@ public class Client{
      * @param errorMessage
      */
     public void showError(String errorMessage) {
-        controller.showError(errorMessage);
+        gui.showError(errorMessage);
     }
 
     /**
@@ -84,7 +84,7 @@ public class Client{
      * @param message Message to be shown
      */
     public void receiveMessage(String message){
-        controller.receiveMessage(message);
+        gui.receiveMessage(message);
     }
 
     /**
@@ -100,7 +100,7 @@ public class Client{
      * @param users new user list
      */
     public void updateListedUsers(String[] users){
-        controller.updateListedUsers(users);
+        gui.updateListedUsers(users);
     }
 
     /**
