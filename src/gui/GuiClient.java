@@ -26,7 +26,7 @@ public class GuiClient extends javax.swing.JFrame {
     }
     
     public void receiveMessage(String message){
-        chatArea.append(message);
+        chatArea.append(message + "\n");
     }
     
     public void updateListedUsers(String[] users){
@@ -232,6 +232,7 @@ public class GuiClient extends javax.swing.JFrame {
         
         String message = writeMessageArea.getText();
         client.sendChatLine(message);
+        writeMessageArea.setText("");
         
     }//GEN-LAST:event_sendMessageButtonActionPerformed
 
