@@ -1,6 +1,10 @@
 package gui;
 
 import client.Client;
+import com.sun.glass.events.KeyEvent;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 
@@ -86,6 +90,9 @@ public class GuiClient extends javax.swing.JFrame {
         writeMessageArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 writeMessageAreaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                writeMessageAreaKeyTyped(evt);
             }
         });
         jScrollPane3.setViewportView(writeMessageArea);
@@ -198,19 +205,47 @@ public class GuiClient extends javax.swing.JFrame {
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
         
+        try {
+            client.logout();
+        } catch (IOException ex) {
+            Logger.getLogger(GuiClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+       
+        
     }//GEN-LAST:event_logOutButtonActionPerformed
 
     private void joinChatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinChatButtonActionPerformed
         
+        String username = usernameField.getText();
+        int portnumber = Integer.parseInt(portnumberField.getText());
+        String hostname = hostnameField.getText();
+        try {
+            client.connect(hostname, portnumber, username);
+        } catch (IOException ex) {
+            Logger.getLogger(GuiClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_joinChatButtonActionPerformed
 
     private void sendMessageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMessageButtonActionPerformed
+        
+        String message = writeMessageArea.getText();
+        client.sendChatLine(message);
         
     }//GEN-LAST:event_sendMessageButtonActionPerformed
 
     private void writeMessageAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_writeMessageAreaKeyReleased
         
     }//GEN-LAST:event_writeMessageAreaKeyReleased
+
+    private void writeMessageAreaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_writeMessageAreaKeyTyped
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER){
+            sendMessageButton.doClick();
+        }else if(writeMessageArea.getText().length() >= 250){
+            evt.consume();
+        }
+    }//GEN-LAST:event_writeMessageAreaKeyTyped
 
     /**
      * @param args the command line arguments
