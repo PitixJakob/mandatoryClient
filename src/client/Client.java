@@ -16,7 +16,8 @@ public class Client{
     private int port;
     private String username;
     private Timer timer;
-
+    private boolean loggedIn;
+    
     private Socket socket;
     private PrintWriter toServer;
     private BufferedReader fromServer;
@@ -29,6 +30,7 @@ public class Client{
      */
     public Client(GuiClient gui){
         this.gui = gui;
+        loggedIn = false;
     }
 
     /**
@@ -92,6 +94,7 @@ public class Client{
      * Starts the timer and tells the gui that the user is connected to the server
      */
     public void joinOK(){
+        loggedIn = true;
         timer.start();
         receiveMessage("Connected to server "+hostname+":"+port);
     }
@@ -109,6 +112,7 @@ public class Client{
      * @throws IOException
      */
     public void logout() throws IOException {
+        loggedIn = false;
         sendMessage("QUIT");
         closeConn();
     }
@@ -131,5 +135,9 @@ public class Client{
 
     public BufferedReader getFromServer() {
         return fromServer;
+    }
+    
+    public boolean getLoggedIn(){
+        return loggedIn;
     }
 }
