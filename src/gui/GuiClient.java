@@ -211,7 +211,7 @@ public class GuiClient extends javax.swing.JFrame {
             Logger.getLogger(GuiClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-       
+        System.exit(EXIT_ON_CLOSE);
         
     }//GEN-LAST:event_logOutButtonActionPerformed
 
