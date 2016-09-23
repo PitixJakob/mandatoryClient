@@ -20,7 +20,7 @@ public class GuiClient extends javax.swing.JFrame {
      * Creates new form GuiClient
      */
     public GuiClient() {
-        
+
         client = new Client(this);
         initComponents();
     }
@@ -90,9 +90,6 @@ public class GuiClient extends javax.swing.JFrame {
         writeMessageArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 writeMessageAreaKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                writeMessageAreaKeyTyped(evt);
             }
         });
         jScrollPane3.setViewportView(writeMessageArea);
@@ -231,7 +228,11 @@ public class GuiClient extends javax.swing.JFrame {
     private void sendMessageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMessageButtonActionPerformed
         
         String message = writeMessageArea.getText();
-        client.sendChatLine(message);
+        if(message.length() <= 250){
+            JOptionPane.showMessageDialog(rootPane, "You're message contains more than 250 character, please reduce the number of character");
+        }else{
+            client.sendChatLine(message);
+        }
         writeMessageArea.setText("");
         
     }//GEN-LAST:event_sendMessageButtonActionPerformed
@@ -239,14 +240,6 @@ public class GuiClient extends javax.swing.JFrame {
     private void writeMessageAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_writeMessageAreaKeyReleased
         
     }//GEN-LAST:event_writeMessageAreaKeyReleased
-
-    private void writeMessageAreaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_writeMessageAreaKeyTyped
-        if(evt.getKeyChar() == KeyEvent.VK_ENTER){
-            sendMessageButton.doClick();
-        }else if(writeMessageArea.getText().length() >= 250){
-            evt.consume();
-        }
-    }//GEN-LAST:event_writeMessageAreaKeyTyped
 
     /**
      * @param args the command line arguments
