@@ -37,7 +37,7 @@ public class Reader implements Runnable{
 
             }
         }catch (Exception ex){
-            client.showError("Encountered an error while reading from socket");
+            //Not really a problem
         }
     }
 }
