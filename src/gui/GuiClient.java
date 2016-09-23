@@ -1,21 +1,39 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
+
+import client.Client;
+import javax.swing.JOptionPane;
+
 
 /**
  *
  * @author Gudni
  */
 public class GuiClient extends javax.swing.JFrame {
+    
+    private Client client;
 
     /**
      * Creates new form GuiClient
      */
     public GuiClient() {
+        
+        client = new Client(this);
         initComponents();
+    }
+    
+    public void receiveMessage(String message){
+        chatArea.append(message);
+    }
+    
+    public void updateListedUsers(String[] users){
+        listOfUsersArea.setText("");
+        for (String username : users) {
+            listOfUsersArea.append(username+"\n");
+        }
+    }
+    
+    public void showError(String errorMessage){
+        JOptionPane.showMessageDialog(this, errorMessage);
     }
 
     /**
@@ -179,19 +197,19 @@ public class GuiClient extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_logOutButtonActionPerformed
 
     private void joinChatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinChatButtonActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_joinChatButtonActionPerformed
 
     private void sendMessageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMessageButtonActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_sendMessageButtonActionPerformed
 
     private void writeMessageAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_writeMessageAreaKeyReleased
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_writeMessageAreaKeyReleased
 
     /**
