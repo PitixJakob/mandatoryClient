@@ -36,6 +36,7 @@ public class Client {
         loggedIn = false;
     }
 
+
     /**
      * Sends a connection request to the server
      *
@@ -163,4 +164,5 @@ public class Client {
     public boolean getLoggedIn() {
         return loggedIn;
     }
+    
 }

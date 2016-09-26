@@ -6,6 +6,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -27,6 +28,8 @@ public class GuiClient extends javax.swing.JFrame {
 
         client = new Client(this);
         initComponents();
+        
+        usernameField.setTransferHandler(null);
 
         //Set caret to autoscroll on chat window
         DefaultCaret caret = (DefaultCaret) chatArea.getCaret();
@@ -114,9 +117,24 @@ public class GuiClient extends javax.swing.JFrame {
 
         usernameLabel.setText("Username:");
 
+        usernameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                usernameFieldKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                usernameFieldKeyTyped(evt);
+            }
+        });
+
         hostnameLabel.setText("Hostname:");
 
         portnumberLabel.setText("Port number:");
+
+        portnumberField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                portnumberFieldKeyReleased(evt);
+            }
+        });
 
         joinChatButton.setText("Join chat");
         joinChatButton.addActionListener(new java.awt.event.ActionListener() {
@@ -227,14 +245,17 @@ public class GuiClient extends javax.swing.JFrame {
     private void joinChatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinChatButtonActionPerformed
 
         String username = usernameField.getText();
-        int portnumber = Integer.parseInt(portnumberField.getText());
-        String hostname = hostnameField.getText();
-        try {
-            client.connect(hostname, portnumber, username);
-        } catch (IOException ex) {
-            Logger.getLogger(GuiClient.class.getName()).log(Level.SEVERE, null, ex);
+        if (username.length() > 12) {
+            JOptionPane.showMessageDialog(rootPane, "Username to long, may only contain 12 caracters or less");
+        } else {
+            int portnumber = Integer.parseInt(portnumberField.getText());
+            String hostname = hostnameField.getText();
+            try {
+                client.connect(hostname, portnumber, username);
+            } catch (IOException ex) {
+                Logger.getLogger(GuiClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
     }//GEN-LAST:event_joinChatButtonActionPerformed
 
     private void sendMessageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMessageButtonActionPerformed
@@ -254,6 +275,27 @@ public class GuiClient extends javax.swing.JFrame {
             sendMessageButton.doClick();
         }
     }//GEN-LAST:event_writeMessageAreaKeyReleased
+
+    private void usernameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameFieldKeyReleased
+
+        
+
+    }//GEN-LAST:event_usernameFieldKeyReleased
+
+    private void usernameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameFieldKeyTyped
+        
+        if ((evt.getKeyChar() + "").matches("[^a-zA-Z0-9_-]")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_usernameFieldKeyTyped
+
+    private void portnumberFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_portnumberFieldKeyReleased
+        
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            joinChatButton.doClick();
+        }
+        
+    }//GEN-LAST:event_portnumberFieldKeyReleased
 
     /**
      * @param args the command line arguments
