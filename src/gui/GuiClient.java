@@ -239,7 +239,9 @@ public class GuiClient extends javax.swing.JFrame {
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
         client.logout();
-        System.exit(EXIT_ON_CLOSE);
+        chatArea.setText("");
+        writeMessageArea.setText("");
+        listOfUsersArea.setText("");
     }//GEN-LAST:event_logOutButtonActionPerformed
 
     private void joinChatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinChatButtonActionPerformed
@@ -265,7 +267,7 @@ public class GuiClient extends javax.swing.JFrame {
             client.sendChatLine(message);
             writeMessageArea.setText("");
         } else {
-            JOptionPane.showMessageDialog(rootPane, "You're message contains more than 250 character, we will reduce the number of character.\nCheck if you are logged in.");
+            JOptionPane.showMessageDialog(rootPane, "You're message contains more than 250 character, you must reduce the number of character.\nCheck if you are logged in.");
         }
 
     }//GEN-LAST:event_sendMessageButtonActionPerformed
