@@ -242,6 +242,7 @@ public class GuiClient extends javax.swing.JFrame {
         chatArea.setText("");
         writeMessageArea.setText("");
         listOfUsersArea.setText("");
+        usernameField.setText("");
     }//GEN-LAST:event_logOutButtonActionPerformed
 
     private void joinChatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinChatButtonActionPerformed
