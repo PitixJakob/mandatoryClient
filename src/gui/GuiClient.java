@@ -249,8 +249,9 @@ public class GuiClient extends javax.swing.JFrame {
 
         String username = usernameField.getText();
         if (username.length() > 12) {
-            JOptionPane.showMessageDialog(rootPane, "Username to long, may only contain 12 caracters or less");
-        } else {
+            showError("Username to long, may only contain 12 caracters or less");
+        } else if(client.getLoggedIn()){
+            showError("You are already logged in FOOL");
             int portnumber = Integer.parseInt(portnumberField.getText());
             String hostname = hostnameField.getText();
             try {
@@ -268,7 +269,7 @@ public class GuiClient extends javax.swing.JFrame {
             client.sendChatLine(message);
             writeMessageArea.setText("");
         } else {
-            JOptionPane.showMessageDialog(rootPane, "You're message contains more than 250 character, you must reduce the number of character.\nCheck if you are logged in.");
+            showError("You're message contains more than 250 character, you must reduce the number of character.\nCheck if you are logged in.");
         }
 
     }//GEN-LAST:event_sendMessageButtonActionPerformed
