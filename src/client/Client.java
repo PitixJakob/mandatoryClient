@@ -36,7 +36,6 @@ public class Client {
         loggedIn = false;
     }
 
-
     /**
      * Sends a connection request to the server
      *
@@ -106,7 +105,7 @@ public class Client {
      */
     public void joinOK() {
         loggedIn = true;
-        timer.start();
+        timer.restart();
         receiveMessage("Connected to server " + hostname + ":" + port);
     }
 
@@ -129,6 +128,7 @@ public class Client {
             if (loggedIn) {
                 sendMessage("QUIT");
             }
+            timer.stop();
             loggedIn = false;
             closeConn();
         } catch (IOException ex) {
@@ -164,5 +164,5 @@ public class Client {
     public boolean getLoggedIn() {
         return loggedIn;
     }
-    
+
 }
