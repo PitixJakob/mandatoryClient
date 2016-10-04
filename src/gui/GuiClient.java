@@ -312,7 +312,7 @@ public class GuiClient extends javax.swing.JFrame {
 
     private void usernameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameFieldKeyTyped
 
-        if ((evt.getKeyChar() + "").matches("[^a-zA-Z0-9_-]")) {
+        if ((evt.getKeyChar() + "").matches("[^a-zA-Z0-9ÆØÅæøå_-]")) {
             evt.consume();
         }
     }//GEN-LAST:event_usernameFieldKeyTyped
