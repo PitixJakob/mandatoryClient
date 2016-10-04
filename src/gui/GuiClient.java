@@ -57,6 +57,43 @@ public class GuiClient extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, errorMessage);
     }
 
+    public boolean validLogin() {
+        boolean result = true;
+
+        //CHECK USERNAME IS NOT EMPTY && NOT OVER LENGTH LIMIT
+        if (usernameField.getText().length() > 12 || usernameField.getText().length() < 1) {
+            result = false;
+            showError("Username has a minimum length of 1 and a max length of 12");
+        }
+
+        //CHECK HOSTNAME IS NOT EMPTY
+        if (hostnameField.getText().isEmpty() && result) {
+            result = false;
+            showError("Hostname cannot be empty");
+        }
+
+        //CHECK PORTNUMBER IS VALID
+        if (!portnumberField.getText().isEmpty()) {
+            try {
+                Integer.parseInt(portnumberField.getText());
+            } catch (NumberFormatException e) {
+                result = false;
+                showError("Portnumber is not a valid number");
+            }
+        } else if (result){
+            result = false;
+            showError("Portnumber cannot be empty");
+        }
+        
+        //CANT LOGIN IF ALREADY LOGGED IN
+        if (client.getLoggedIn() && result) {
+            result = false;
+            showError("You are already logged in FOOL");
+        }
+
+        return result;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -248,11 +285,7 @@ public class GuiClient extends javax.swing.JFrame {
     private void joinChatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinChatButtonActionPerformed
 
         String username = usernameField.getText();
-        if (username.length() > 12) {
-            showError("Username to long, may only contain 12 caracters or less");
-        } else if (client.getLoggedIn()) {
-            showError("You are already logged in FOOL");
-        } else {
+        if (validLogin()) {
             int portnumber = Integer.parseInt(portnumberField.getText());
             String hostname = hostnameField.getText();
             try {
@@ -269,9 +302,9 @@ public class GuiClient extends javax.swing.JFrame {
         if (message.length() <= 250 && client.getLoggedIn()) {
             client.sendChatLine(message);
             writeMessageArea.setText("");
-        } else if (client.getLoggedIn()){
+        } else if (client.getLoggedIn()) {
             showError("You're message contains more than 250 character, you must reduce the number of characters.");
-        }else{
+        } else {
             showError("Check if you are logged in.");
         }
 
