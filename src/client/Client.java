@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
@@ -23,8 +24,8 @@ public class Client {
     private boolean loggedIn;
 
     private Socket socket;
-    private PrintWriter toServer;
-    private BufferedReader fromServer;
+    private PrintWriter out;
+    private BufferedReader in;
     private GuiClient gui;
 
     /**
@@ -48,15 +49,15 @@ public class Client {
      */
     public void connect(String hostname, int port, String username) {
         try {
-            socket = new Socket(hostname, port);
-            toServer = new PrintWriter(socket.getOutputStream(), true);
-            fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            socket = new Socket(InetAddress.getByName(hostname), port);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.username = username;
             this.hostname = hostname;
             this.port = port;
 
-            Reader ir = new Reader(this);
-            Thread readerThread = new Thread(ir);
+            Reader reader = new Reader(this);
+            Thread readerThread = new Thread(reader);
             readerThread.start();
 
             sendMessage("JOIN " + username + ", " + hostname + ":" + port);
@@ -82,7 +83,7 @@ public class Client {
      * @param message Message to be sent
      */
     public void sendMessage(String message) {
-        toServer.println(message);
+        out.println(message);
     }
 
     /**
@@ -126,8 +127,6 @@ public class Client {
 
     /**
      * Disconnects from the server
-     *
-     * @throws IOException
      */
     public void logout() {
         try {
@@ -150,11 +149,11 @@ public class Client {
      * disconnection anyways?
      */
     public void closeConn() throws IOException {
-        if (fromServer != null) {
-            fromServer.close();
+        if (in != null) {
+            in.close();
         }
-        if (toServer != null) {
-            toServer.close();
+        if (out != null) {
+            out.close();
         }
         if (socket != null) {
             if (!socket.isClosed()) {
@@ -163,8 +162,8 @@ public class Client {
         }
     }
 
-    public BufferedReader getFromServer() {
-        return fromServer;
+    public BufferedReader getIn() {
+        return in;
     }
 
     public boolean getLoggedIn() {

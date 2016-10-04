@@ -7,11 +7,11 @@ import java.io.BufferedReader;
  */
 public class Reader implements Runnable{
     private Client client;
-    private BufferedReader fromServer;
+    private BufferedReader in;
 
     public Reader(Client client) {
         this.client = client;
-        this.fromServer = client.getFromServer();
+        this.in = client.getIn();
     }
 
     @Override
@@ -19,7 +19,7 @@ public class Reader implements Runnable{
         String message;
 
         try{
-            while ((message = fromServer.readLine()) != null){
+            while ((message = in.readLine()) != null){
                 if (message.startsWith("J_ERR")){
                     client.showError("Username is already taken");
                     client.closeConn();
@@ -34,7 +34,6 @@ public class Reader implements Runnable{
                 if (message.startsWith("J_OK")){
                     client.joinOK();
                 }
-
             }
         }catch (Exception ex){
             //Not really a problem

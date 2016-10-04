@@ -4,14 +4,8 @@ import client.Client;
 import com.sun.glass.events.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.text.DefaultCaret;
-import sun.awt.WindowClosingListener;
 
 /**
  *
@@ -279,7 +273,6 @@ public class GuiClient extends javax.swing.JFrame {
         chatArea.setText("");
         writeMessageArea.setText("");
         listOfUsersArea.setText("");
-        usernameField.setText("");
     }//GEN-LAST:event_logOutButtonActionPerformed
 
     private void joinChatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinChatButtonActionPerformed
