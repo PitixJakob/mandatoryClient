@@ -80,11 +80,11 @@ public class GuiClient extends javax.swing.JFrame {
                 result = false;
                 showError("Portnumber is not a valid number");
             }
-        } else if (result){
+        } else if (result) {
             result = false;
             showError("Portnumber cannot be empty");
         }
-        
+
         //CANT LOGIN IF ALREADY LOGGED IN
         if (client.getLoggedIn() && result) {
             result = false;
@@ -288,11 +288,7 @@ public class GuiClient extends javax.swing.JFrame {
         if (validLogin()) {
             int portnumber = Integer.parseInt(portnumberField.getText());
             String hostname = hostnameField.getText();
-            try {
-                client.connect(hostname, portnumber, username);
-            } catch (IOException ex) {
-                Logger.getLogger(GuiClient.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            client.connect(hostname, portnumber, username);
         }
     }//GEN-LAST:event_joinChatButtonActionPerformed
 

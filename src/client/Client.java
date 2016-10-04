@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,20 +46,25 @@ public class Client {
      * @param username
      * @throws IOException
      */
-    public void connect(String hostname, int port, String username) throws IOException {
-        socket = new Socket(hostname, port);
-        toServer = new PrintWriter(socket.getOutputStream(), true);
-        fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.username = username;
-        this.hostname = hostname;
-        this.port = port;
+    public void connect(String hostname, int port, String username) {
+        try {
+            socket = new Socket(hostname, port);
+            toServer = new PrintWriter(socket.getOutputStream(), true);
+            fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.username = username;
+            this.hostname = hostname;
+            this.port = port;
 
-        Reader ir = new Reader(this);
-        Thread readerThread = new Thread(ir);
-        readerThread.start();
+            Reader ir = new Reader(this);
+            Thread readerThread = new Thread(ir);
+            readerThread.start();
 
-
-        sendMessage("JOIN " + username + ", " + hostname + ":" + port);
+            sendMessage("JOIN " + username + ", " + hostname + ":" + port);
+        } catch (UnknownHostException e) {
+            gui.showError("Server not found @ " + hostname + ":" + port);
+        } catch (Exception ex) {
+            gui.showError("Failed to connect to server @ "+hostname+":"+port);
+        }
     }
 
     /**
