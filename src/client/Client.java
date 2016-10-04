@@ -35,7 +35,7 @@ public class Client {
     public Client(GuiClient gui) {
         this.gui = gui;
         loggedIn = false;
-        timer = new Timer(5000, e -> sendMessage("ALVE"));
+        timer = new Timer(60000, e -> sendMessage("ALVE"));
     }
 
     /**
