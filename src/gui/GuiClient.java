@@ -251,13 +251,14 @@ public class GuiClient extends javax.swing.JFrame {
         if (username.length() > 12) {
             showError("Username to long, may only contain 12 caracters or less");
         } else if(client.getLoggedIn()){
-            showError("You are already logged in FOOL");
-            int portnumber = Integer.parseInt(portnumberField.getText());
-            String hostname = hostnameField.getText();
-            try {
-                client.connect(hostname, portnumber, username);
-            } catch (IOException ex) {
-                Logger.getLogger(GuiClient.class.getName()).log(Level.SEVERE, null, ex);
+            showError("You are already logged in FOOL");}
+            else{
+                int portnumber = Integer.parseInt(portnumberField.getText());
+                String hostname = hostnameField.getText();
+                try {
+                 client.connect(hostname, portnumber, username);
+                } catch (IOException ex) {
+                    Logger.getLogger(GuiClient.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_joinChatButtonActionPerformed
