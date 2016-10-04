@@ -182,7 +182,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="usernameField">
       <Events>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="usernameFieldKeyReleased"/>
         <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="usernameFieldKeyTyped"/>
       </Events>
     </Component>

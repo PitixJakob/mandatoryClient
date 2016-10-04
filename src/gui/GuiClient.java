@@ -149,9 +149,6 @@ public class GuiClient extends javax.swing.JFrame {
         usernameLabel.setText("Username:");
 
         usernameField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                usernameFieldKeyReleased(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 usernameFieldKeyTyped(evt);
             }
@@ -304,11 +301,6 @@ public class GuiClient extends javax.swing.JFrame {
             sendMessageButton.doClick();
         }
     }//GEN-LAST:event_writeMessageAreaKeyReleased
-
-    private void usernameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameFieldKeyReleased
-
-
-    }//GEN-LAST:event_usernameFieldKeyReleased
 
     private void usernameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameFieldKeyTyped
 
