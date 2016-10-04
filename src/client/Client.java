@@ -34,6 +34,7 @@ public class Client {
     public Client(GuiClient gui) {
         this.gui = gui;
         loggedIn = false;
+        timer = new Timer(5000, e -> sendMessage("ALVE"));
     }
 
     /**
@@ -56,7 +57,6 @@ public class Client {
         Thread readerThread = new Thread(ir);
         readerThread.start();
 
-        timer = new Timer(60000, e -> sendMessage("ALVE"));
 
         sendMessage("JOIN " + username + ", " + hostname + ":" + port);
     }

@@ -28,7 +28,7 @@ public class GuiClient extends javax.swing.JFrame {
 
         client = new Client(this);
         initComponents();
-        
+
         usernameField.setTransferHandler(null);
 
         //Set caret to autoscroll on chat window
@@ -250,15 +250,15 @@ public class GuiClient extends javax.swing.JFrame {
         String username = usernameField.getText();
         if (username.length() > 12) {
             showError("Username to long, may only contain 12 caracters or less");
-        } else if(client.getLoggedIn()){
-            showError("You are already logged in FOOL");}
-            else{
-                int portnumber = Integer.parseInt(portnumberField.getText());
-                String hostname = hostnameField.getText();
-                try {
-                 client.connect(hostname, portnumber, username);
-                } catch (IOException ex) {
-                    Logger.getLogger(GuiClient.class.getName()).log(Level.SEVERE, null, ex);
+        } else if (client.getLoggedIn()) {
+            showError("You are already logged in FOOL");
+        } else {
+            int portnumber = Integer.parseInt(portnumberField.getText());
+            String hostname = hostnameField.getText();
+            try {
+                client.connect(hostname, portnumber, username);
+            } catch (IOException ex) {
+                Logger.getLogger(GuiClient.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_joinChatButtonActionPerformed
@@ -269,8 +269,10 @@ public class GuiClient extends javax.swing.JFrame {
         if (message.length() <= 250 && client.getLoggedIn()) {
             client.sendChatLine(message);
             writeMessageArea.setText("");
-        } else {
-            showError("You're message contains more than 250 character, you must reduce the number of character.\nCheck if you are logged in.");
+        } else if (client.getLoggedIn()){
+            showError("You're message contains more than 250 character, you must reduce the number of characters.");
+        }else{
+            showError("Check if you are logged in.");
         }
 
     }//GEN-LAST:event_sendMessageButtonActionPerformed
@@ -283,23 +285,22 @@ public class GuiClient extends javax.swing.JFrame {
 
     private void usernameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameFieldKeyReleased
 
-        
 
     }//GEN-LAST:event_usernameFieldKeyReleased
 
     private void usernameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameFieldKeyTyped
-        
+
         if ((evt.getKeyChar() + "").matches("[^a-zA-Z0-9_-]")) {
             evt.consume();
         }
     }//GEN-LAST:event_usernameFieldKeyTyped
 
     private void portnumberFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_portnumberFieldKeyReleased
-        
+
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             joinChatButton.doClick();
         }
-        
+
     }//GEN-LAST:event_portnumberFieldKeyReleased
 
     /**
